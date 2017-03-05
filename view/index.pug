@@ -1,0 +1,119 @@
+html(data-ng-app="nodejs_test")
+	head
+		title Test job NodeJS
+		meta(charset="utf-8")
+		meta(http-equiv="X-UA-Compatible" content="IE=edge")
+		meta(name="viewport" content="width=device-width, initial-scale=1")
+		meta(name="description" content="")
+
+		link(href="../static/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet")
+		link(href="../static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css")
+		link(href="../static/custom/custom.css" rel="stylesheet" type="text/css")
+	body(data-ng-controller="MainController" data-ng-cloak)
+		#wrapper
+			nav.navbar.navbar-default.navbar-static-top(role="navigation")
+				.navbar-header
+					button.navbar-toggle(type="button" data-toggle="collapse" data-target=".navbar-collapse")
+						span.sr-only Меню
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href="/") Главная
+				.navbar-default.sidebar(role="navigation")
+					.sidebar-nav.navbar-collapse
+						ul.nav#side-menu
+							li
+								a(href="#" data-ng-click="showDepartments()")
+									i.fa.fa-dashboard.fa-fw
+									span Departments
+							li
+								a(href="#" data-ng-click="showEmployees()")
+									i.fa.fa-table.fa-fw
+									span Employees
+			#page-wrapper
+				.row
+					.col-xs-12
+						h1.page-header Test job NodeJS
+				.row(data-ng-controller="DepartmentsController" data-ng-if="isDepartmentsShown" data-ng-cloak)
+					.col-xs-12
+						h2 Departments
+						.table-responsive
+							table.table.table-striped.table-bordered.table-hover
+								thead
+									tr
+										th #
+										th Department name
+										th
+											a(data-open-modal="#dep-modal" data-id="")
+												i.fa.fa-plus
+								tbody
+									tr(data-ng-repeat="department in departments" data-id="{{department.id}}")
+										td(data-ng-bind="$index + 1"  data-open-modal="#dep-modal")
+										td(data-ng-bind="department.name"  data-open-modal="#dep-modal")
+										td
+											a(data-ng-click="remove(department.id)")
+												i.fa.fa-ban
+						#dep-modal.modal.fade(tabindex="-1" role="dialog")
+							.modal-dialog(role="document")
+								.modal-content
+									.modal-header
+										button.close(type="button" data-dismiss="modal" aria-label="close")
+											span(aria-hidden="true") &times;
+										h4.modal-title Department
+									.modal-body
+										form
+											input.form-control(type="hidden" data-ng-model="modal.id")
+											label Name:
+											input.form-control(type="text" data-ng-model="modal.name")
+									.modal-footer
+										button.btn.btn-default(type="button" data-dismiss="modal") Close
+										button.btn.btn-primary(type="button" data-ng-click="update(modal.id)") Save changes
+
+				.row(data-ng-controller="EmployeesController" data-ng-if="isEmployeesShown" data-ng-cloak)
+					.col-xs-12
+						h2 Employees
+						.table-responsive
+							table.table.table-striped.table-bordered.table-hover
+								thead
+									tr
+										th #
+										th First name
+										th Last name
+										th Department
+										th
+											a(data-open-modal="#emp-modal" data-id="")
+												i.fa.fa-plus
+								tbody
+									tr(data-ng-repeat="employee in employees" data-id="{{employee.id}}")
+										td(data-ng-bind="$index + 1" data-open-modal="#emp-modal")
+										td(data-ng-bind="employee.firstName" data-open-modal="#emp-modal")
+										td(data-ng-bind="employee.lastName" data-open-modal="#emp-modal")
+										td(data-ng-bind="employee.department.name")
+										td
+											a(data-ng-click="remove(employee.id)")
+												i.fa.fa-ban
+						#emp-modal.modal.fade(tabindex="-1" role="dialog")
+							.modal-dialog(role="document")
+								.modal-content
+									.modal-header
+										button.close(type="button" data-dismiss="modal" aria-label="close")
+											span(aria-hidden="true") &times;
+										h4.modal-title Employee
+									.modal-body
+										form
+											input.form-control(type="hidden" data-ng-model="modal.id")
+											label First name:
+											input.form-control(type="text" data-ng-model="modal.firstName")
+											label Last name:
+											input.form-control(type="text" data-ng-model="modal.lastName")
+											label Department:
+											select.form-control(data-ng-model="modal.department.id")
+												option(data-ng-repeat="department in $parent.departments" data-ng-value="department.id" data-ng-selected="modal.department.id == department.id") {{department.name}}
+									.modal-footer
+										button.btn.btn-default(type="button" data-dismiss="modal") Close
+										button.btn.btn-primary(type="button" data-ng-click="update(modal.id)") Save changes
+
+		script(src="../static/jquery/dist/jquery.min.js")
+		script(src="../static/bootstrap/dist/js/bootstrap.min.js")
+		script(src="../static/angular/angular.min.js")
+		script(src="../static/custom/custom.js")
