@@ -5,6 +5,7 @@ var express = require('express'),
 app.set('views', './view');
 app.set('view engine', 'pug');
 app.use('/static', express.static('bower_components'));
+app.use('/assets', express.static('assets'));
 
 app.get('/', (req, res) => {
 	res.render('index', {});
